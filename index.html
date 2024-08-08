@@ -62,7 +62,9 @@
   }
 
   function fetchPages() {
-    FB.api('/me/accounts', function(response) {
+  FB.api('/me/accounts', function(response) {
+    console.log(response);  // Log the entire response for debugging
+    if (response && !response.error) {
       if (response.data && response.data.length > 0) {
         let pagesList = document.getElementById("pages");
         response.data.forEach(page => {
@@ -74,8 +76,13 @@
       } else {
         document.getElementById("pages").innerHTML = "No pages found.";
       }
-    });
-  }
+    } else {
+      console.log('Error fetching pages:', response.error);
+      document.getElementById("pages").innerHTML = "Error fetching pages. Please check console for details.";
+    }
+  });
+}
+
 
   function fetchPageInsights(pageId) {
     FB.api(`/${pageId}/insights`, function(response) {
